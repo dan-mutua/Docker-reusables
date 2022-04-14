@@ -1,0 +1,15 @@
+version: '2'
+services: # Remember we can have multiple service as you have in your app.
+    web-server:
+        container_name: web-server #name of your container
+        build:
+            context: Some kind of name describing the conainter
+            dockerfile: Dockerfile
+        image: web-server:latest
+        ports:
+            - 18888:8888
+        networks:
+            - spring-cloud-network
+networks:
+    spring-cloud-network:
+        driver: bridge
