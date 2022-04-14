@@ -1,0 +1,21 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: npm run dev
+    volumes:
+      - .:/usr/app/
+      - /usr/app/node_modules
+    ports:
+      - "3000:3000"
+    #now from here setup your database as it is required by your app.
+    #Remember the database could also be mysql or others.
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: #your database url
+  postgres:
+    image: postgres:9.6.2-alpine
+    environment:
+      POSTGRES_USER: #username for the db
+      POSTGRES_DB: #the name of the database
