@@ -1,0 +1,50 @@
+version: '3.6'
+
+services:
+  db:
+    image: postgres:13.0-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  backend:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: Dockerfile      
+    command: bash -c "gunicorn api.wsgi --bind 0.0.0.0:8000"
+    container_name: backend
+    image: backend_image
+    volumes:
+      - ./api:/backend
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    
+
+  scheduler:
+    restart: always
+    build:
+      context: ./backend
+      dockerfile: SchedulerDockerfile
+    volumes:
+      - ./api:/backend
+    container_name: scheduler
+    image: scheduler_image
+
+
+  frontend:
+    restart: always
+    build:  
+      context: ./vue-ui
+      dockerfile: Dockerfile
+    container_name: frontend
+    image: frontend_image
+    depends_on:
+      - backend
+    volumes:
+      - ./vue-ui/nginx:/etc/nginx/conf.d
+    ports:
+      - 80:80
