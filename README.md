@@ -57,4 +57,7 @@ files when it comes to dockerization or containerrization of applications.
 2. Inventory
 ```
 
+<div align="center">
+	<img src="main.gif" alt="Hello. I'm Joseph. I like code. Thanks for reading.">
+</div>
 
